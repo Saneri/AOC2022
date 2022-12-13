@@ -24,12 +24,12 @@ def move_tail(tail, head):
     if head[1] < tail[1]:
         tail[1] -= 1
     
-knots = [[0, 0], [0, 0],[0, 0], [0, 0],[0, 0], [0, 0],[0, 0], [0, 0],[0, 0], [0, 0]]
+knots = [[0,0] for _ in range(10)]
 visited_spots = set()
 for line in data:
     direction = line[0]
     amount = int(line[1])
-    for _ in range(0, amount):
+    for _ in range(amount):
         move_head(knots[0], direction)
         for i in range(1, len(knots)):
             if not is_touching(knots[i], knots[i-1]):
