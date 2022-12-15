@@ -1,4 +1,6 @@
-data = open('test.txt', 'r').read().split('\n\n')
+import math
+
+data = open('input.txt', 'r').read().split('\n\n')
 
 class Monkey:
     def __init__(self, input):
@@ -22,12 +24,14 @@ class Monkey:
     def add_item(self, item):
         self.items.append(item)
 
-    def inspect_all_items(self, monkey_list, isRelieved):
+    def inspect_all_items(self, monkey_list, isRelieved, common_divider):
         for _ in range(len(self.items)):
             item = self.items.pop(0)
             worry_level = self.calculate_stress(item)
             if isRelieved:
                 worry_level = worry_level // 3
+            else: 
+                worry_level = worry_level % common_divider
             new_monkey = self.test(worry_level)
             monkey_list[new_monkey].add_item(worry_level)
             self.inspection_count += 1
@@ -39,9 +43,10 @@ monkeys = [Monkey(definition) for definition in data]
 monkeys2 = [Monkey(definition) for definition in data]
 
 def find_max_values_after_rounds(monkeys, rounds, relief):
+    common_divider = math.prod([monkey.divider for monkey in monkeys])
     for _ in range (rounds):
         for monkey in monkeys:
-            monkey.inspect_all_items(monkeys, relief)
+            monkey.inspect_all_items(monkeys, relief, common_divider)
     counts = sorted([monkey.inspection_count for monkey in monkeys])
     return counts[-1] * counts[-2]
 
